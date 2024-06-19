@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import { Form, redirect, useActionData, useNavigation } from 'react-router-dom'
-import { createOrder } from '../../services/apiRestaurant'
+import { useState } from 'react';
+import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
+import { createOrder } from '../../services/apiRestaurant';
+import Button from '../../ui/Button';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
     /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
         str
-    )
+    );
 
 const fakeCart = [
     {
@@ -30,15 +31,15 @@ const fakeCart = [
         unitPrice: 15,
         totalPrice: 15,
     },
-]
+];
 
 function CreateOrder() {
-    const navigation = useNavigation()
-    const isSubmitting = navigation.state === 'submitting'
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === 'submitting';
 
-    const formErrors = useActionData()
+    const formErrors = useActionData();
     // const [withPriority, setWithPriority] = useState(false);
-    const cart = fakeCart
+    const cart = fakeCart;
 
     return (
         <div>
@@ -48,13 +49,23 @@ function CreateOrder() {
             <Form method="POST">
                 <div>
                     <label>First Name</label>
-                    <input type="text" name="customer" required />
+                    <input
+                        type="text"
+                        name="customer"
+                        className="input"
+                        required
+                    />
                 </div>
 
                 <div>
                     <label>Phone number</label>
                     <div>
-                        <input type="tel" name="phone" required />
+                        <input
+                            type="tel"
+                            name="phone"
+                            className="input"
+                            required
+                        />
                     </div>
                     {formErrors?.phone && <p>{formErrors.phone}</p>}
                 </div>
@@ -62,7 +73,12 @@ function CreateOrder() {
                 <div>
                     <label>Address</label>
                     <div>
-                        <input type="text" name="address" required />
+                        <input
+                            type="text"
+                            name="address"
+                            required
+                            className="input"
+                        />
                     </div>
                 </div>
 
@@ -71,6 +87,7 @@ function CreateOrder() {
                         type="checkbox"
                         name="priority"
                         id="priority"
+                        className="h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-offset-2"
                         // value={withPriority}
                         // onChange={(e) => setWithPriority(e.target.checked)}
                     />
@@ -85,36 +102,33 @@ function CreateOrder() {
                         name="cart"
                         value={JSON.stringify(cart)}
                     />
-                    <button
-                        disabled={isSubmitting}
-                        className="inline-block rounded-full bg-yellow-400 px-4 py-3 font-semibold uppercase tracking-wide text-stone-800 transition-colors duration-300 hover:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed"
-                    >
+                    <Button disabled={isSubmitting} type="primary">
                         {isSubmitting ? 'Placing order...' : 'Order now'}
-                    </button>
+                    </Button>
                 </div>
             </Form>
         </div>
-    )
+    );
 }
 
 export async function action({ request }) {
-    const formData = await request.formData()
-    const data = Object.fromEntries(formData)
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
     const order = {
         ...data,
         cart: JSON.parse(data.cart),
         priority: data.priority === 'on',
-    }
-    const errors = {}
+    };
+    const errors = {};
     if (!isValidPhone(order.phone))
         errors.phone =
-            'Incorrect phone number. Please enter a valid phone number'
+            'Incorrect phone number. Please enter a valid phone number';
 
-    if (Object.keys(errors).length > 0) return errors
+    if (Object.keys(errors).length > 0) return errors;
 
     // If no errors, create new order and redirect.
-    const newOrder = await createOrder(order)
-    return redirect(`/order/${newOrder.id}`)
+    const newOrder = await createOrder(order);
+    return redirect(`/order/${newOrder.id}`);
 }
 
-export default CreateOrder
+export default CreateOrder;

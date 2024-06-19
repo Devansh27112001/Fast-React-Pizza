@@ -12,6 +12,7 @@ import OrderItem from './OrderItem';
 function Order() {
     const order = useLoaderData();
     // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
+    console.log(order);
     const {
         id,
         status,
@@ -21,6 +22,7 @@ function Order() {
         estimatedDelivery,
         cart,
     } = order;
+
     const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
     return (
@@ -53,7 +55,7 @@ function Order() {
 
             <ul className="divide-y divide-stone-200 border-b border-t">
                 {cart.map((pizza) => (
-                    <OrderItem key={pizza.id} item={pizza} />
+                    <OrderItem key={pizza.pizzaId} item={pizza} />
                 ))}
             </ul>
 

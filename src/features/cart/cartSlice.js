@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    // cart: [],
+    cart: [],
     // Just for development purposes. a fake cart entry has been created.
-    cart: [
-        {
-            pizzaId: 12,
-            name: 'Mediteranean',
-            quantity: 2,
-            unitPrice: 16,
-            totalPrice: 32,
-        },
-    ],
+    // cart: [
+    //     {
+    //         pizzaId: 12,
+    //         name: 'Mediteranean',
+    //         quantity: 2,
+    //         unitPrice: 16,
+    //         totalPrice: 32,
+    //     },
+    // ],
 };
 
 const cartSlice = createSlice({
@@ -57,3 +57,10 @@ export const {
     clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;
+
+// If you use { } braces, then it is required to write return keyword for the state.cart.cart....
+export const getTotalCartQuantity = (state) =>
+    state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+export const getTotalCartPrice = (state) =>
+    state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0);

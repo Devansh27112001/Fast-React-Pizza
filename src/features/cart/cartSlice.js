@@ -42,6 +42,10 @@ const cartSlice = createSlice({
             );
             item.quantity--;
             item.totalPrice = item.unitPrice * item.quantity;
+
+            // This is nice trick to call one of the reducers inside a reducer.
+            item.quantity === 0 &&
+                cartSlice.caseReducers.deleteItem(state, action);
         },
         clearCart(state) {
             state.cart = [];

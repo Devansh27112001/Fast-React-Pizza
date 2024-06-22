@@ -1,6 +1,6 @@
 // Test ID: IIDSAT
 
-import { useLoaderData } from 'react-router-dom';
+import { useFetcher, useLoaderData } from 'react-router-dom';
 import { getOrder } from '../../services/apiRestaurant';
 import {
     calcMinutesLeft,
@@ -8,12 +8,23 @@ import {
     formatDate,
 } from '../../utilities/helpers';
 import OrderItem from './OrderItem';
+import { useEffect } from 'react';
 
 function Order() {
     // Getting the data that is returned by the loader function below.
     const order = useLoaderData();
+    // suppose we want to get the data that we receive at /menu route here but without navigating to the /menu route. Then we use the useFetcher() hook below of react-Router
+    const fetcher = useFetcher();
+    useEffect(
+        function () {
+            if (!fetcher.data && fetcher.state === 'idle')
+                fetcher.load('/menu');
+        },
+        [fetcher]
+    );
+    console.log(fetcher.data);
+
     // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
-    console.log(order);
     const {
         id,
         status,
@@ -56,7 +67,15 @@ function Order() {
 
             <ul className="divide-y divide-stone-200 border-b border-t">
                 {cart.map((pizza) => (
-                    <OrderItem key={pizza.pizzaId} item={pizza} />
+                    <OrderItem
+                        key={pizza.pizzaId}
+                        item={pizza}
+                        isLoadingIngredients={fetcher.state === 'loading'}
+                        ingredients={
+                            fetcher?.data?.find((el) => el.id === pizza.pizzaId)
+                                ?.ingredients ?? []
+                        }
+                    />
                 ))}
             </ul>
 

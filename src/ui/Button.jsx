@@ -23,8 +23,8 @@ function Button({ children, disabled, to, type, onClick }) {
         return (
             <button
                 onClick={onClick}
-                disabled={disabled}
                 className={buttonType[type]}
+                disabled={disabled}
             >
                 {children}
             </button>

@@ -1,5 +1,4 @@
 import { formatCurrency } from '../../utilities/helpers';
-import Button from '../../ui/Button';
 import DeleteItem from './DeleteItem';
 import UpdateItemQuantity from './UpdateItemQuantity';
 

@@ -10,6 +10,7 @@ import {
 import OrderItem from './OrderItem';
 
 function Order() {
+    // Getting the data that is returned by the loader function below.
     const order = useLoaderData();
     // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
     console.log(order);

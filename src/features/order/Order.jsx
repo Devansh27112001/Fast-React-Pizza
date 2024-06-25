@@ -9,6 +9,7 @@ import {
 } from '../../utilities/helpers';
 import OrderItem from './OrderItem';
 import { useEffect } from 'react';
+import UpdateOrder from './UpdateOrder';
 
 function Order() {
     // Getting the data that is returned by the loader function below.
@@ -93,6 +94,7 @@ function Order() {
                     {formatCurrency(orderPrice + priorityPrice)}
                 </p>
             </div>
+            {!priority && <UpdateOrder order={order} />}
         </div>
     );
 }
